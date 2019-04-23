@@ -4,14 +4,18 @@ import os
 import sys
 
 # Import CRUD Operations from Lesson 1
-#from sqlalchemy import create_engine
-#from sqlalchemy.orm import sessionmaker
-#from database_setup import Base, Restaurant, MenuItem
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Restaurant, MenuItem
 
 from BaseHTTPServer  import BaseHTTPRequestHandler, HTTPServer
 import cgi
 
 # Create session and connect to DB
+engine = create_engine('sqlite:///restaurantmenu.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 # Handler class indicates what code to execute based on the type
 # of request is sent to the server
@@ -45,6 +49,21 @@ class WebServerHandler(BaseHTTPRequestHandler):
             output += "<form method='POST' enctype='multipart/form-data' action='/hello'>"
             output += "<input name='message' type='text' >"
             output += "<input type='submit' value='Submit'></form>"
+            output += "</body></html>"
+            self.wfile.write(output)
+            print(output)
+            return
+
+        if self.path.endswith("/restaurants"):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            restaurants = session.query(Restaurant).all()
+            output = ""
+            output += "<html><body>"
+            for restaurant in restaurants:
+              output += (restaurant.name )
+              output += "<br/>"     
             output += "</body></html>"
             self.wfile.write(output)
             print(output)
