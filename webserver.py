@@ -1,7 +1,18 @@
 # webserver.py
 # Simple HTTP server
+import os
+import sys
+
+# Import CRUD Operations from Lesson 1
+#from sqlalchemy import create_engine
+#from sqlalchemy.orm import sessionmaker
+#from database_setup import Base, Restaurant, MenuItem
+
 from BaseHTTPServer  import BaseHTTPRequestHandler, HTTPServer
 import cgi
+
+# Create session and connect to DB
+
 # Handler class indicates what code to execute based on the type
 # of request is sent to the server
 class WebServerHandler(BaseHTTPRequestHandler):
@@ -14,15 +25,15 @@ class WebServerHandler(BaseHTTPRequestHandler):
             self.end_headers()
             output = ""
             output += "<html><body>"
-            output += "Hello!"            
-            output += "<h1>What would you like me to say?</h1>"
-            output += "<form method='POST' enctype='multipart/form-data' action='/hello'>"
-            output += "<input name='message' type='text' >"
-            output += "<input type='submit' value='Submit'></form>"
+            output += "<h1>Hello!</h1>" 
+            output += '''<form method='POST' enctype='multipart/form-data' action='/hello'>
+            <h2>What would you like me to say?</h2><input name="message" type="text" >
+            <input type="submit" value="Submit"> </form>'''
             output += "</body></html>"
             self.wfile.write(output)
             print(output)
             return
+
         if self.path.endswith("/hola"):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -35,33 +46,32 @@ class WebServerHandler(BaseHTTPRequestHandler):
             output += "<input name='message' type='text' >"
             output += "<input type='submit' value='Submit'></form>"
             output += "</body></html>"
-            output += "</body></html>"
             self.wfile.write(output)
             print(output)
             return
+        
       except IOError:
           self.send_error(404, 'File Not Found: %s' % self.path)
 
     def do_POST(self):
       try:
         self.send_response(301)
+        self.send_header('Content-type', 'text/html')
         self.end_headers()
-
-        ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-        if (ctype == 'multipart/form-data'):
-          fields = cgi.parse_multipart(self.rfile, pdict)
-          messagecontent = fields.get('message')
-
+        ctype, pdict = cgi.parse_header(
+            self.headers.getheader('content-type'))
+        if ctype == 'multipart/form-data':
+            fields = cgi.parse_multipart(self.rfile, pdict)
+            messagecontent = fields.get('message')
         output = ""
         output += "<html><body>"
-        output +=" <h2>Okay, how about this: </h2>"
+        output += " <h2> Okay, how about this: </h2>"
         output += "<h1> %s </h1>" % messagecontent[0]
-
-        output += "<form method='POST' enctype='multipart/form-data' action='/hello'>"
-        output += "<input name='message' type='text' >"
-        output += "<input type='submit' value='Submit'></form>"
+        output += '''<form method='POST' enctype='multipart/form-data' action='/hello'>
+        <h2>What would you like me to say?</h2>
+        <input name="message" type="text" >
+        <input type="submit" value="Submit"> </form>'''
         output += "</body></html>"
-        output += "</body></h"
         self.wfile.write(output)
         print(output)
 
