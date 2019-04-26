@@ -45,7 +45,9 @@ def newMenuItem(restaurant_id):
         restaurant_id = restaurant_id)
         session.add(newItem)
         session.commit()
-        # redirect user after submitting form
+        # redirect user after submitting form, redirecting to restaurantMenu 
+        # with variable restaurant_id. This function call must match expected
+        # arguments.
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
     else:
         return render_template('newmenuitem.html', restaurant_id = restaurant_id)
@@ -54,6 +56,7 @@ def newMenuItem(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/', methods=['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
     editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
+    # If this is a POST request
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -61,16 +64,24 @@ def editMenuItem(restaurant_id, menu_id):
         session.commit()
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
     else:
+        # 3 variables passed into render_template allows editmenuitem.html
+        # access to them, the restaurant.id, menuItem.id, and the editedItem
+        # object.
+        # This is a GET response. With the html template to display, passing in
+        # variables used in the template.
         return render_template('editmenuitem.html', restaurant_id = restaurant_id, 
             menu_id = menu_id, item=editedItem)
 
-
+# Delete item from restaurant menu
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/delete/')
 def deleteMenuItem(restaurant_id, menu_id):
-    return "page to delete a menu item. Task 3 complete!"
-
-
-
+    deletedItem = session.query(MenuItem).filter_by(id=menu_id).one()
+    if request.method == 'POST':
+        session.delete(deletedItem)
+        session.commit()
+        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
+    else:
+        return render_template('deletemenuitem.html', item = deletedItem)
 
 if __name__ == '__main__':
     # Logging to terminal
