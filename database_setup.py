@@ -20,6 +20,13 @@ class Restaurant(Base):
     # Primary Key
     id = Column(Integer, primary_key = True)
 
+    @property
+    def serialize(self):
+        return {
+            'name' : self.name,
+            'id' : self.id
+        }
+
 
 # extends BASE
 # this represents a table
@@ -36,6 +43,15 @@ class MenuItem(Base):
      restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
      # creates relationship with class Restaurant
      restaurant = relationship(Restaurant)
+
+     @property
+     def serialize(self):
+         return {
+             'id' : self.id,
+             'course' : self.course,
+             'description' : self.description,
+             'restaurant_id' : self.restaurant_id
+         }
 
 # create instance of create database class
 # and point to db to use
