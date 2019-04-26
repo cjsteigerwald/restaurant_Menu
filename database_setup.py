@@ -19,7 +19,8 @@ class Restaurant(Base):
     name = Column(String(80), nullable = False)
     # Primary Key
     id = Column(Integer, primary_key = True)
-
+    # This serialize function allows JSON objects to be sent in a 
+    # serializable format
     @property
     def serialize(self):
         return {
