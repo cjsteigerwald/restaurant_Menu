@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 #Fake Restaurants
@@ -17,43 +17,46 @@ item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$
 @app.route('/')
 @app.route('/restaurants/')
 def showRestaurants():
-    return "Show all restaurants"
+    return render_template('restaurants.html', restaurants = restaurants)
 
 # Page for creating a restaurant
 @app.route('/restaurant/restaurant_id/new/')
 def newRestaurant():
-    return "This page creates a restaurants"
+    return render_template('newRestaurant.html', restaurant = restaurant)
 
 # Page for editing a restaurant
 @app.route('/restaurant/restaurant_id/edit/')
 def editRestaurant():
-    return "Page to edit restaurant"
+    return render_template('editRestaurant.html', restaurant = restaurant)
 
 # Page for deleting a restaurant
 @app.route('/restaurant/restaurant_id/delete/')
 def deleteRestaurant():
-    return "Page to delete restaurant"
+    return render_template('deleteRestaurant.html', restaurant = restaurant)
 
 # Page for displaying restaurant menu
 @app.route('/restaurant/restaurant_id/')
 @app.route('/restaurant/restaurant_id/menu')
 def showMenu():
-    return "Show menu"
+    return render_template('menu.html', restaurant = restaurant, items = items) 
 
-# Page to add new menu item to restaurant
+# Page to add new menu item for restaurant
 @app.route('/restaurant/restaurant_id/menu/new/')
-def newMenuItem():
-    return "New menu item"
+def newMenuItem(restaurant_id):
+    return render_template('newMenuItem.html', restaurant_id = restaurant_id)
 
 # Page to edit menu item
 @app.route('/restaurant/restaurant_id/menu/edit/')
-def editMenuItem():
-    return "Edit menu item"
+def editMenuItem(restaurant_id, menu_id):
+    return render_template('editMenuItem.html', restaurant_id = restaurant_id,
+        menu_id = menu_id)
 
 # Page to delete menu item
 @app.route('/restaurant/restaurant_id/menu/delete/')
-def delteMenuItem():
-    return "Delete menu item"
+def delteMenuItem(restaurant_id, menu_id):
+    deletedItem = menu_id
+    return render_template('deleteMenuItem.html', restaurant_id = restaurant_id,
+        item = deletedItem)
 
 
 if __name__ == '__main__':

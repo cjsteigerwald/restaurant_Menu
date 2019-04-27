@@ -1,0 +1,18 @@
+<!-- Make sure that variables are the same as the parameters passed by the
+render_template() from calling function. i.e. project.py editMenuItem returns
+render_template('editmenuitem.html', restaurant_id = restaurant_id, 
+menu_id = menu_id, item=editedItem) these parameters match with below 
+restaurant_id, menu_it, and item.name -->
+<html>
+	<body>
+		<h1>Edit Menu Item</h1>
+		<form action= "{{url_for('editMenuItem', restaurant_id = restaurant_id, 
+		menu_id=item.id)}}" method = 'POST'>
+				<p>Name:</p>
+				<input type = 'text' size='30' placeholder='{{item.name}}' name='name'>
+				<input type='submit' value='Edit'>
+				<input type='submit' value='Cancel'>
+		</form>
+		<a href= "{{url_for('restaurantMenu', restaurant_id= item.restaurant_id)}}">Cancel</a>
+	</body>
+</html>
