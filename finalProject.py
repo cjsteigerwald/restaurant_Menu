@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 #Fake Restaurants
@@ -20,13 +20,18 @@ def showRestaurants():
     return render_template('restaurants.html', restaurants = restaurants)
 
 # Page for creating a restaurant
-@app.route('/restaurant/restaurant_id/new/')
+@app.route('/restaurants/new/', methods=['GET', 'POST'])
 def newRestaurant():
-    return render_template('newRestaurant.html', restaurant = restaurant)
+    if request.method == 'POST':
+        return redirect(url_for('showRestaurants'))
+    else:
+        return render_template('newRestaurant.html')
+
 
 # Page for editing a restaurant
-@app.route('/restaurant/restaurant_id/edit/')
-def editRestaurant():
+@app.route('/restaurant/<int:restaurant_id>/edit/')
+def editRestaurant(restaurant_id):
+    restaurant = restaurants[restaurant_id]
     return render_template('editRestaurant.html', restaurant = restaurant)
 
 # Page for deleting a restaurant
