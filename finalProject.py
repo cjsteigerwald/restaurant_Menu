@@ -29,15 +29,24 @@ def newRestaurant():
 
 
 # Page for editing a restaurant
-@app.route('/restaurant/<int:restaurant_id>/edit/')
+@app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
-    restaurant = restaurants[restaurant_id]
-    return render_template('editRestaurant.html', restaurant = restaurant)
+	restaurant = restaurants[restaurant_id - 1]
+	if request.method == 'POST':
+		return redirect(url_for('showRestaurants'))
+	else:
+		return render_template('editRestaurant.html', restaurant = restaurant)
+	
 
 # Page for deleting a restaurant
-@app.route('/restaurant/restaurant_id/delete/')
-def deleteRestaurant():
-    return render_template('deleteRestaurant.html', restaurant = restaurant)
+@app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
+def deleteRestaurant(restaurant_id):
+	print("rtd: %s" % restaurant_id)
+	restaurant_to_delete = restaurants[restaurant_id - 1]
+	if request.method == 'POST':
+		return redirect(url_for('showRestaurants'))
+	else:
+		return render_template('deleteRestaurant.html', restaurant = restaurant_to_delete)
 
 # Page for displaying restaurant menu
 @app.route('/restaurant/restaurant_id/')
