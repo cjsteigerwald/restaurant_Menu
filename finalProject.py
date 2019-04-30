@@ -81,6 +81,11 @@ def showMenu(restaurant_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
     if request.method == 'POST':
+        new_item = MenuItem(name = request.form['name'], restaurant_id = restaurant_id,
+            description = request.form['description'], price = request.form['price'],
+            course = request.form['course'])
+        session.add(new_item)
+        session.commit()
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('newMenuItem.html', restaurant_id = restaurant_id)
@@ -97,7 +102,7 @@ def editMenuItem(restaurant_id, items_id):
                 item_to_edit.description = request.form['description']
             if request.form['price']:
                 item_to_edit.price = request.form['price']
-            if request.form['course']:
+            if 'course' in request.form:
                 item_to_edit.course = request.form['course']
             session.add(item_to_edit)
             session.commit()
@@ -117,6 +122,27 @@ def deleteMenuItem(restaurant_id, items_id):
 	else:
 		return render_template('deleteMenuItem.html', restaurant_id = restaurant_id,
 		item = item_to_delete)
+
+# Making an API Endpoint (GET Request) for sending a list of restaurants JSON 
+@app.route('/restaurants/JSON')
+def restaurantsJSON():
+    restaurants = session.query(Restaurant).all()    
+    # DB.py file must have definition for serialize
+    return jsonify(Restaurants=[i.serialize for i in restaurants])
+
+# Making an API Endpoint (GET Request) for sending a restaurant menu JSON 
+@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
+def restaurantMenuJSON(restaurant_id):
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
+    # DB.py file must have definition for serialize
+    return jsonify(MenuItems=[i.serialize for i in items])
+
+# API endpoint (GET Request) for sending a menu item JSON
+@app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/JSON/')
+def menuItemJSON(restaurant_id, menu_id):
+    menuItem = session.query(MenuItem).filter_by(id=menu_id).one()
+    return jsonify(MenuItem = menuItem.serialize)
 
 if __name__ == '__main__':
     # Flask uses to create messages for users
