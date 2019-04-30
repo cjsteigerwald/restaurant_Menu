@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 app = Flask(__name__)
 
@@ -8,10 +9,11 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
 
 # Create session and connect to DB
-engine = create_engine('sqlite:///restaurantmenu.db')
+engine = create_engine('sqlite:///restaurantmenu.db?check_same_thread=False')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
 #Fake Restaurants
 #restaurant = {'name': 'The CRUDdy Crab', 'id': '1'}
 
@@ -106,13 +108,15 @@ def editMenuItem(restaurant_id, items_id):
 # Page to delete menu item
 @app.route('/restaurant/<int:restaurant_id>/<int:items_id>/menu/delete/', methods=['GET', 'POST'])
 def deleteMenuItem(restaurant_id, items_id):
-    itemToDelete = items[items_id - 1]
-    if request.method == 'POST':        
-        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
-    else:
-        return render_template('deleteMenuItem.html', restaurant_id = restaurant_id,
-        item = itemToDelete)
-
+	item_to_delete = session.query(MenuItem).filter_by(id=items_id).one()
+	if request.method == 'POST':
+		if request.form['submit_button'] == 'Delete':
+			session.delete(item_to_delete)
+			session.commit()       
+		return redirect(url_for('showMenu', restaurant_id = restaurant_id))
+	else:
+		return render_template('deleteMenuItem.html', restaurant_id = restaurant_id,
+		item = item_to_delete)
 
 if __name__ == '__main__':
     # Flask uses to create messages for users
