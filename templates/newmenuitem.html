@@ -2,10 +2,33 @@
     <body>
         <h1>New Menu Item</h1>        
         <form action="{{ url_for('newMenuItem', restaurant_id=restaurant_id )}}"
-        method = 'post'>
+        method = 'POST'>
     <p>Name:</p>
     <input type = 'text' size='30' name='name'>
+    
+    <p>Description:</p>
+    <input type = 'text' size='30' name='description'>
+    
+    <p>Price:</p>
+    <input type = 'text' size='30' name='price'>
+    
+    <div>    
+    <p>Course:</p>
+    <input type="radio" name='course' id='appetizer' value='Appetizer'>
+    <label for="appetizer">Appetizer</label>
+    <br>
+    <input type="radio" name='course' id='entree' value='Entree'>
+    <label for="entree">Entree</label>  
+    <br>
+    <input type="radio" name='course' id='dessert' value='Dessert'>
+    <label for="dessert">Dessert</label>
+    <br>
+    <input type="radio" name='course' id='beverage' value='Beverage'>
+    <label for="beverage">Beverage</label>  
+    </div>
     <input type='submit' value='Create'>
+    <input type='submit' value='Cancel'>
+    
     </form>
     </body>
 </html>

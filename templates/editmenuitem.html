@@ -6,13 +6,18 @@ restaurant_id, menu_it, and item.name -->
 <html>
 	<body>
 		<h1>Edit Menu Item</h1>
-		<form action= "{{url_for('editMenuItem', restaurant_id = restaurant_id, 
-		menu_id=item.id)}}" method = 'POST'>
+		<form action= "{{ url_for('editMenuItem', restaurant_id = restaurant_id,
+		items_id = item.id) }}" method = 'POST'>
 				<p>Name:</p>
 				<input type = 'text' size='30' placeholder='{{item.name}}' name='name'>
-				<input type='submit' value='Edit'>
-				<input type='submit' value='Cancel'>
+				<p>Description:</p>
+				<input type = 'text' size='30' placeholder='{{item.description}}' name='description'>
+				<p>Price:</p>
+				<input type = 'text' size='30' placeholder='{{item.price}}' name='price'>
+				<p>Course:</p>
+				<input type = 'text' size='30' placeholder='{{item.course}}' name='course'>
+				<input type='submit' name='submit_button' value='Edit'>
+				<input type='submit' name='submit_button' value='Cancel'>
 		</form>
-		<a href= "{{url_for('restaurantMenu', restaurant_id= item.restaurant_id)}}">Cancel</a>
 	</body>
 </html>

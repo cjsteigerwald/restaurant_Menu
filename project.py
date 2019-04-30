@@ -37,7 +37,7 @@ def restaurantMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant_id)
     return render_template(
-        'menu.html', restaurant=restaurant, items=items)
+        'menu1.html', restaurant=restaurant, items=items)
 
 # Create new restaurant item
 @app.route('/restaurants/<int:restaurant_id>/new/', methods=['GET', 'POST'])
