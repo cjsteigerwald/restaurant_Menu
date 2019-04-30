@@ -1,6 +1,19 @@
 <html>
 	<body>
 		<h1>Menu for {{restaurant.name}}</h1>
+		<div class = 'flash'>
+			<!--MESSAGE FLASHING EXAMPLE -->
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+
+			<ul>
+			{% for message in messages %}
+				<li><strong>{{message}}</strong></li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			{% endwith %}
+		</div>
 		<a href = '{{url_for('newMenuItem', restaurant_id = restaurant.id) }}'>Create New Item</a>
 			{% if not items %}
 				<label>You currently have no menu items</label>

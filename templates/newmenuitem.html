@@ -1,5 +1,5 @@
 <html>
-    <body>
+    <body>        
         <h1>New Menu Item</h1>        
         <form action="{{ url_for('newMenuItem', restaurant_id=restaurant_id )}}"
         method = 'POST'>
@@ -13,18 +13,18 @@
     <input type = 'text' size='30' name='price'>
     
     <div>    
-    <p>Course:</p>
-    <input type="radio" name='course' id='appetizer' value='Appetizer'>
-    <label for="appetizer">Appetizer</label>
-    <br>
-    <input type="radio" name='course' id='entree' value='Entree'>
-    <label for="entree">Entree</label>  
-    <br>
-    <input type="radio" name='course' id='dessert' value='Dessert'>
-    <label for="dessert">Dessert</label>
-    <br>
-    <input type="radio" name='course' id='beverage' value='Beverage'>
-    <label for="beverage">Beverage</label>  
+        <p>Course:</p>
+        <input type="radio" name='course' id='appetizer' value='Appetizer'>
+        <label for="appetizer">Appetizer</label>
+        <br>
+        <input type="radio" name='course' id='entree' value='Entree'>
+        <label for="entree">Entree</label>  
+        <br>
+        <input type="radio" name='course' id='dessert' value='Dessert'>
+        <label for="dessert">Dessert</label>
+        <br>
+        <input type="radio" name='course' id='beverage' value='Beverage'>
+        <label for="beverage">Beverage</label>  
     </div>
     <input type='submit' value='Create'>
     <input type='submit' value='Cancel'>

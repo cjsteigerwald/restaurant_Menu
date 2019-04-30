@@ -1,12 +1,12 @@
 <html>
 	<body>
-			<h1>Are you sure you want to delete {{item.name}}?</h1>
-			
-			<form action="{{ url_for('deleteMenuItem', restaurant_id = restaurant_id,
-			items_id=item.id) }}" method = 'POST'>
-			<p>{{item.name}}</p>
-			<input type='submit' name='submit_button' value='Delete'>
-			<input type='submit' name='submit_button' value='Cancel'>
-			</form>		
+		<h1>Are you sure you want to delete {{item.name}}?</h1>
+		
+		<form action="{{ url_for('deleteMenuItem', restaurant_id = restaurant_id,
+		items_id=item.id) }}" method = 'POST'>
+		<p>{{item.name}}</p>
+		<input type='submit' name='submit_button' value='Delete'>
+		<input type='submit' name='submit_button' value='Cancel'>
+		</form>		
 	</body>
 </html>
